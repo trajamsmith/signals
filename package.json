@@ -41,11 +41,15 @@
   "dependencies": {
     "@jupyterlab/application": "^2.0.0",
     "@jupyterlab/coreutils": "^4.0.0",
+    "@jupyterlab/docmanager": "^2.1.2",
+    "@jupyterlab/fileeditor": "^2.1.2",
     "@jupyterlab/services": "^5.0.0",
     "@reduxjs/toolkit": "^1.4.0",
+    "codemirror": "^5.55.0",
     "react-redux": "^7.2.0"
   },
   "devDependencies": {
+    "@types/codemirror": "^0.0.76",
     "@types/react-redux": "^7.1.9",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.25.0",

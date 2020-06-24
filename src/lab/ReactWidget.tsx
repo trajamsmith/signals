@@ -1,6 +1,6 @@
 import React from 'react'
 import { ReactWidget } from '@jupyterlab/apputils'
-import App from './components/App'
+import App from '../components/App'
 import { ISignal, Signal } from '@lumino/signaling'
 
 export interface ICount {

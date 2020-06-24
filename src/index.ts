@@ -1,7 +1,7 @@
 import { ILayoutRestorer, JupyterFrontEndPlugin } from '@jupyterlab/application'
 import { ICommandPalette } from '@jupyterlab/apputils'
 
-import activate from './activate'
+import activate from './lab/activate'
 
 /**
  * Initialization data for the signals extension.
