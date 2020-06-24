@@ -1,7 +1,5 @@
 # signals
 
-![Github Actions Status](https://github.com/my_name/myextension/workflows/Build/badge.svg)
-
 Spec extension using Lab's signals API.
 
 
@@ -92,4 +90,3 @@ Now every change will be built locally and bundled into JupyterLab. Be sure to r
 pip uninstall signals
 jupyter labextension uninstall signals
 ```
-# signals
