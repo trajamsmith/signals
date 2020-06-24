@@ -6,7 +6,7 @@ import {
 } from '@jupyterlab/apputils'
 
 import ReactWidget from './ReactWidget'
-import { requestAPI } from './signals'
+import { requestAPI } from './services/signals'
 
 export default (
     app: JupyterFrontEnd,
@@ -20,10 +20,10 @@ export default (
 
     // Add an application command
     const command = 'signals:open'
-    app.commands.addCommand(command, {
+    app.commands.addCommand('signals:open', {
         label: 'Open Signals Test App',
         execute: () => {
-            if (!widget) {
+            if (!widget || widget.isDisposed) {
                 // Create a new widget if one does not exist
                 const content = new ReactWidget()
                 widget = new MainAreaWidget({ content })
@@ -47,7 +47,7 @@ export default (
     })
 
     // Add the command to the palette.
-    palette.addItem({ command, category: 'Tutorial' })
+    palette.addItem({ command, category: 'Signals Test' })
 
     // Track and restore the widget state
     const tracker = new WidgetTracker<MainAreaWidget<ReactWidget>>({
