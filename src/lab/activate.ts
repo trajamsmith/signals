@@ -44,7 +44,10 @@ export default (
 
     // Declare a widget variable
     let widget: MainAreaWidget<ReactWidget>
+
     let editor: IDocumentWidget<FileEditor>
+    let editorWidget: MainAreaWidget<FileEditor>
+
     const editorFactory = new FileEditorFactory({
         editorServices: {
             factoryService,
@@ -84,15 +87,14 @@ export default (
             widget.content.update()
 
             // Activate the widget
-            app.shell.activateById(widget.id)
-
-            if (!editor || editor.isDisposed) {
+            // app.shell.activateById(widget.id)
+            if (!editorWidget || editorWidget.isDisposed) {
                 // Create a new editor if one does not exist
                 editor = editorFactory.createNew(context)
-                console.log(`EDITOR: ${editor}`)
-                editor.id = 'signals-jupyterlab'
-                editor.title.label = 'Signals Editor'
-                editor.title.closable = true
+                editorWidget = new MainAreaWidget({ content: editor.content })
+                editorWidget.id = 'signals-jupyterlab'
+                editorWidget.title.label = 'Signals Editor'
+                editorWidget.title.closable = true
             }
 
             // if (!tracker.has(editor)) {
@@ -100,15 +102,15 @@ export default (
             //     tracker.add(editor)
             // }
 
-            if (!editor.isAttached) {
+            if (!editorWidget.isAttached) {
                 // Attach the editor to the main work area if it's not there
-                app.shell.add(editor, 'main')
+                app.shell.add(editorWidget, 'main')
             }
 
-            editor.content.update()
+            editorWidget.content.update()
 
             // Activate the editor
-            app.shell.activateById(editor.id)
+            app.shell.activateById(editorWidget.id)
         }
     })
 
