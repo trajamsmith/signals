@@ -21,7 +21,6 @@ import {
     TextModelFactory
     // DocumentWidget
 } from '@jupyterlab/docregistry'
-import { ServiceManager } from '@jupyterlab/services'
 
 import ReactWidget from './ReactWidget'
 import { requestAPI } from '../services/signals'
@@ -35,11 +34,10 @@ export default (
     const factoryService = new CodeMirrorEditorFactory()
     const modelFactory = new TextModelFactory()
     const mimeTypeService = new CodeMirrorMimeTypeService()
-    const manager: ServiceManager.IManager = app.serviceManager
 
-    const path = './setup.py'
+    const path = 'setup.py'
     const context: Context<DocumentRegistry.ICodeModel> = new Context({
-        manager,
+        manager: app.serviceManager,
         factory: modelFactory,
         path
     })
@@ -69,14 +67,14 @@ export default (
                 const content = new ReactWidget()
                 widget = new MainAreaWidget({ content })
                 widget.id = 'signals-jupyterlab'
-                widget.title.label = 'Signals Test'
+                widget.title.label = 'Signals UI'
                 widget.title.closable = true
             }
 
-            if (!tracker.has(widget)) {
-                // Track the state of the widget for later restoration
-                tracker.add(widget)
-            }
+            // if (!tracker.has(widget)) {
+            //     // Track the state of the widget for later restoration
+            //     tracker.add(widget)
+            // }
 
             if (!widget.isAttached) {
                 // Attach the widget to the main work area if it's not there
@@ -89,19 +87,18 @@ export default (
             app.shell.activateById(widget.id)
 
             if (!editor || editor.isDisposed) {
-                console.log('HITTING THIS')
                 // Create a new editor if one does not exist
                 editor = editorFactory.createNew(context)
+                console.log(`EDITOR: ${editor}`)
                 editor.id = 'signals-jupyterlab'
-                editor.title.label = 'Signals Test'
+                editor.title.label = 'Signals Editor'
                 editor.title.closable = true
             }
-            console.log(`EDITOR: ${editor}`)
 
-            if (!tracker.has(editor)) {
-                // Track the state of the editor for later restoration
-                tracker.add(editor)
-            }
+            // if (!tracker.has(editor)) {
+            //     // Track the state of the editor for later restoration
+            //     tracker.add(editor)
+            // }
 
             if (!editor.isAttached) {
                 // Attach the editor to the main work area if it's not there
@@ -116,7 +113,7 @@ export default (
     })
 
     // Add the command to the palette.
-    palette.addItem({ command, category: 'Signals Test' })
+    palette.addItem({ command, category: 'AAA' })
 
     // Track and restore the widget state
     const tracker = new WidgetTracker<
