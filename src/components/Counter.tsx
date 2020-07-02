@@ -7,7 +7,7 @@ import { increment } from '../redux/counter'
  *
  * @returns The React component
  */
-const Counter = (): JSX.Element => {
+const Counter = ({ stateChanged }): JSX.Element => {
     const dispatch = useDispatch()
     const counter = useSelector(state => state)
 
@@ -16,6 +16,7 @@ const Counter = (): JSX.Element => {
             <p>You clicked {counter} times!</p>
             <button
                 onClick={(): void => {
+                    stateChanged.emit(counter)
                     dispatch(increment())
                 }}
             >

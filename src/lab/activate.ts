@@ -5,7 +5,6 @@ import {
     WidgetTracker
 } from '@jupyterlab/apputils'
 import { FileEditor } from '@jupyterlab/fileeditor'
-import { IDocumentWidget } from '@jupyterlab/docregistry/lib/registry'
 
 import ReactWidget from './ReactWidget'
 import { requestAPI } from '../services/signals'
@@ -18,10 +17,7 @@ export default (
 ): void => {
     console.log('JupyterLab extension signals is activated!')
 
-    // Declare a widget variable
     let widget: MainAreaWidget<ReactWidget>
-
-    let editor: IDocumentWidget<FileEditor>
     let editorWidget: MainAreaWidget<FileEditor>
 
     // Add an application command
@@ -38,10 +34,10 @@ export default (
                 widget.title.closable = true
             }
 
-            // if (!tracker.has(widget)) {
-            //     // Track the state of the widget for later restoration
-            //     tracker.add(widget)
-            // }
+            if (!tracker.has(widget)) {
+                // Track the state of the widget for later restoration
+                tracker.add(widget)
+            }
 
             if (!widget.isAttached) {
                 // Attach the widget to the main work area if it's not there
@@ -54,17 +50,21 @@ export default (
             // app.shell.activateById(widget.id)
             if (!editorWidget || editorWidget.isDisposed) {
                 // Create a new editor if one does not exist
-                editor = createEditor(app.serviceManager)
-                editorWidget = new MainAreaWidget({ content: editor.content })
+                const { content } = createEditor(app.serviceManager)
+                editorWidget = new MainAreaWidget({ content })
                 editorWidget.id = 'signals-jupyterlab'
                 editorWidget.title.label = 'Signals Editor'
                 editorWidget.title.closable = true
+                widget.content.stateChanged.connect(
+                    () => console.log('woah'),
+                    editorWidget
+                )
             }
 
-            // if (!tracker.has(editor)) {
-            //     // Track the state of the editor for later restoration
-            //     tracker.add(editor)
-            // }
+            if (!tracker.has(editorWidget)) {
+                // Track the state of the editor for later restoration
+                tracker.add(editorWidget)
+            }
 
             if (!editorWidget.isAttached) {
                 // Attach the editor to the main work area if it's not there
@@ -83,7 +83,7 @@ export default (
 
     // Track and restore the widget state
     const tracker = new WidgetTracker<
-        MainAreaWidget<ReactWidget> | IDocumentWidget<FileEditor>
+        MainAreaWidget<ReactWidget> | MainAreaWidget<FileEditor>
     >({
         namespace: 'signals'
     })

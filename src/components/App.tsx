@@ -9,10 +9,10 @@ import Counter from './Counter'
  *
  * @returns The React component
  */
-const App = (): JSX.Element => {
+const App = ({ stateChanged }): JSX.Element => {
     return (
         <Provider store={store}>
-            <Counter />
+            <Counter stateChanged={stateChanged} />
         </Provider>
     )
 }

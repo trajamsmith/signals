@@ -24,7 +24,7 @@ class Widget extends ReactWidget {
     }
 
     render(): JSX.Element {
-        return <App />
+        return <App stateChanged={this._stateChanged} />
     }
 
     private _stateChanged = new Signal<this, ICount>(this)
