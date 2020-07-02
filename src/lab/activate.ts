@@ -4,26 +4,12 @@ import {
     MainAreaWidget,
     WidgetTracker
 } from '@jupyterlab/apputils'
-// import { IDocumentManager } from '@jupyterlab/docmanager'
-import {
-    FileEditor,
-    // IEditorTracker,
-    FileEditorFactory
-} from '@jupyterlab/fileeditor'
+import { FileEditor } from '@jupyterlab/fileeditor'
 import { IDocumentWidget } from '@jupyterlab/docregistry/lib/registry'
-import {
-    CodeMirrorEditorFactory,
-    CodeMirrorMimeTypeService
-} from '@jupyterlab/codemirror'
-import {
-    Context,
-    DocumentRegistry,
-    TextModelFactory
-    // DocumentWidget
-} from '@jupyterlab/docregistry'
 
 import ReactWidget from './ReactWidget'
 import { requestAPI } from '../services/signals'
+import createEditor from './createEditor'
 
 export default (
     app: JupyterFrontEnd,
@@ -31,34 +17,12 @@ export default (
     restorer: ILayoutRestorer
 ): void => {
     console.log('JupyterLab extension signals is activated!')
-    const factoryService = new CodeMirrorEditorFactory()
-    const modelFactory = new TextModelFactory()
-    const mimeTypeService = new CodeMirrorMimeTypeService()
-
-    const path = 'setup.py'
-    const context: Context<DocumentRegistry.ICodeModel> = new Context({
-        manager: app.serviceManager,
-        factory: modelFactory,
-        path
-    })
 
     // Declare a widget variable
     let widget: MainAreaWidget<ReactWidget>
 
     let editor: IDocumentWidget<FileEditor>
     let editorWidget: MainAreaWidget<FileEditor>
-
-    const editorFactory = new FileEditorFactory({
-        editorServices: {
-            factoryService,
-            mimeTypeService
-        },
-        factoryOptions: {
-            name: 'editor',
-            fileTypes: ['*'],
-            defaultFor: ['*']
-        }
-    })
 
     // Add an application command
     const command = 'signals:open'
@@ -90,7 +54,7 @@ export default (
             // app.shell.activateById(widget.id)
             if (!editorWidget || editorWidget.isDisposed) {
                 // Create a new editor if one does not exist
-                editor = editorFactory.createNew(context)
+                editor = createEditor(app.serviceManager)
                 editorWidget = new MainAreaWidget({ content: editor.content })
                 editorWidget.id = 'signals-jupyterlab'
                 editorWidget.title.label = 'Signals Editor'
