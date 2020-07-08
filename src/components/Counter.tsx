@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { increment } from '../redux/counter'
+import { IStore } from '../redux/createStore'
 
 /**
  * React component for a counter.
@@ -9,7 +10,7 @@ import { increment } from '../redux/counter'
  */
 const Counter = ({ stateChanged }): JSX.Element => {
     const dispatch = useDispatch()
-    const counter = useSelector(state => state)
+    const counter = useSelector((state: IStore) => state.counter)
 
     return (
         <div>

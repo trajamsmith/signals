@@ -55,12 +55,19 @@ export default (
                 editorWidget.id = 'signals-jupyterlab'
                 editorWidget.title.label = 'Signals Editor'
                 editorWidget.title.closable = true
-                widget.content.stateChanged.connect(() => {
+                editorWidget.content.editor.newIndentedLine()
+                widget.content.stateChanged.connect((widget, data) => {
                     const editor = editorWidget.content.editor
-                    editor.newIndentedLine()
                     const position = editor.getSelection()
                     editorWidget.content.editor.setSelection(position)
-                    editor.replaceSelection('woah woah woah woah')
+                    if (typeof data === 'number') {
+                        editor.replaceSelection(`counter: ${data}\n`)
+                    } else {
+                        //@ts-ignore
+                        editor.replaceSelection(
+                            `${data.key}: '${data.value}'\n`
+                        )
+                    }
                 }, editorWidget)
             }
 

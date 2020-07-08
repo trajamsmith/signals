@@ -20,6 +20,16 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-namespace': 'off',
         '@typescript-eslint/no-use-before-define': 'off',
+        '@typescript-eslint/member-delimiter-style': {
+            multiline: {
+                delimiter: 'none',
+                requireLast: true
+            },
+            singleline: {
+                delimiter: 'none',
+                requireLast: false
+            }
+        },
         '@typescript-eslint/quotes': [
             'error',
             'single',

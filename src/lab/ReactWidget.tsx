@@ -19,7 +19,10 @@ class Widget extends ReactWidget {
         this.addClass('jp-ReactWidget')
     }
 
-    public get stateChanged(): ISignal<this, ICount> {
+    public get stateChanged(): ISignal<
+        this,
+        ICount | { key: string; value: string }
+    > {
         return this._stateChanged
     }
 
