@@ -12,7 +12,7 @@ import setuptools
 HERE = os.path.abspath(os.path.dirname(__file__))
 
 # The name of the project
-name="signals"
+name = "signals"
 
 # Ensure a valid python version
 ensure_python(">=3.5")
@@ -24,7 +24,7 @@ lab_path = os.path.join(HERE, name, "labextension")
 
 # Representative files that should exist after a successful build
 jstargets = [
-    os.path.join(HERE, "lib", "signals.js"),
+    os.path.join(HERE, "lib", "services", "signals.js"),
 ]
 
 package_data_spec = {
@@ -39,10 +39,10 @@ data_files_spec = [
      "jupyter-config", "signals.json"),
 ]
 
-cmdclass = create_cmdclass("jsdeps", 
-    package_data_spec=package_data_spec,
-    data_files_spec=data_files_spec
-)
+cmdclass = create_cmdclass("jsdeps",
+                           package_data_spec=package_data_spec,
+                           data_files_spec=data_files_spec
+                           )
 
 cmdclass["jsdeps"] = combine_commands(
     install_npm(HERE, build_cmd="build:all", npm=["jlpm"]),
@@ -58,9 +58,9 @@ setup_args = dict(
     url="https://github.com/my_name/myextension",
     author="Travis Smith",
     description="Spec extension using Lab's signals API.",
-    long_description= long_description,
+    long_description=long_description,
     long_description_content_type="text/markdown",
-    cmdclass= cmdclass,
+    cmdclass=cmdclass,
     packages=setuptools.find_packages(),
     install_requires=[
         "jupyterlab~=2.0",

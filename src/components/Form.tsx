@@ -64,7 +64,7 @@ const Form: React.FC<IFormProps> = ({ stateChanged }) => {
                     <Field name="value" ref={register()} />
                 </Row>
                 <Row>
-                    <Submit type="submit">Add Property</Submit>
+                    <Submit type="submit" value="Add Property" />
                 </Row>
             </Container>
         </form>
