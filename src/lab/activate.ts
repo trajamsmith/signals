@@ -55,10 +55,10 @@ export default (
                 editorWidget.id = 'signals-jupyterlab'
                 editorWidget.title.label = 'Signals Editor'
                 editorWidget.title.closable = true
-                widget.content.stateChanged.connect(
-                    () => console.log('woah'),
-                    editorWidget
-                )
+                widget.content.stateChanged.connect(() => {
+                    console.log('woah')
+                    editorWidget.content.editor.newIndentedLine()
+                }, editorWidget)
             }
 
             if (!tracker.has(editorWidget)) {
