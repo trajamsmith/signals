@@ -1,12 +1,6 @@
 import { MainAreaWidget } from '@jupyterlab/apputils'
-import { FileEditor, FileEditorFactory } from '@jupyterlab/fileeditor'
-import {
-    CodeEditor,
-    CodeEditorWrapper,
-    IEditorServices,
-    IEditorMimeTypeService
-} from '@jupyterlab/codeeditor'
-import { ISignal, Signal } from '@lumino/signaling'
+import { FileEditor } from '@jupyterlab/fileeditor'
+import { CodeEditor } from '@jupyterlab/codeeditor'
 import { TStateChanged } from '../uiWidget/ReactWidget'
 
 interface IEditorWidgetOptions {
@@ -16,7 +10,7 @@ interface IEditorWidgetOptions {
 }
 
 class EditorWidget extends MainAreaWidget<FileEditor> {
-    editor: CodeEditor.IEditor
+    private editor: CodeEditor.IEditor
 
     constructor(content: FileEditor, options?: IEditorWidgetOptions) {
         super({ content })
