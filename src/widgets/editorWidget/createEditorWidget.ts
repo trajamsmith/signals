@@ -11,9 +11,17 @@ import {
 } from '@jupyterlab/docregistry'
 import { ServiceManager } from '@jupyterlab/services'
 import { MainAreaWidget } from '@jupyterlab/apputils'
+import { TStateChanged } from '../uiWidget/ReactWidget'
+import EditorWidget from './EditorWidget'
 
+/**
+ * Factory function for editor widgets.
+ * @param serviceManager from app
+ * @param uiStateChanged from UI Widget
+ */
 const createEditorWidget = (
-    serviceManager: ServiceManager
+    serviceManager: ServiceManager,
+    uiStateChanged: TStateChanged
 ): MainAreaWidget<FileEditor> => {
     const factoryService = new CodeMirrorEditorFactory()
     const modelFactory = new TextModelFactory()
@@ -37,15 +45,14 @@ const createEditorWidget = (
             defaultFor: ['*']
         }
     })
-
     const { content } = editorFactory.createNew(context)
-    const editorWidget = new MainAreaWidget({ content })
 
-    editorWidget.id = 'signals-jupyterlab'
-    editorWidget.title.label = 'Signals Editor'
-    editorWidget.title.closable = true
-
-    return editorWidget
+    const options = {
+        signals: {
+            uiStateChanged
+        }
+    }
+    return new EditorWidget(content, options)
 }
 
 export default createEditorWidget

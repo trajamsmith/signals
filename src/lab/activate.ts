@@ -6,10 +6,10 @@ import {
 } from '@jupyterlab/apputils'
 import { FileEditor } from '@jupyterlab/fileeditor'
 
-import ReactWidget from '../widgets/ReactWidget'
+import ReactWidget from '../widgets/uiWidget/ReactWidget'
 import { requestAPI } from '../services/signals'
-import createEditorWidget from '../widgets/createEditorWidget'
-import createUIWidget from '../widgets/createUIWidget'
+import createEditorWidget from '../widgets/editorWidget/createEditorWidget'
+import createUIWidget from '../widgets/uiWidget/createUIWidget'
 
 export default (
     app: JupyterFrontEnd,
@@ -47,22 +47,10 @@ export default (
             // app.shell.activateById(widget.id)
             if (!editorWidget || editorWidget.isDisposed) {
                 // Create a new editor if one does not exist
-                editorWidget = createEditorWidget(app.serviceManager)
-
-                editorWidget.content.editor.newIndentedLine()
-                widget.content.stateChanged.connect((widget, data) => {
-                    const editor = editorWidget.content.editor
-                    const position = editor.getSelection()
-                    editorWidget.content.editor.setSelection(position)
-                    if (typeof data === 'number') {
-                        editor.replaceSelection(`counter: ${data}\n`)
-                    } else {
-                        editor.replaceSelection(
-                            //@ts-ignore
-                            `${data.key}: '${data.value}'\n`
-                        )
-                    }
-                }, editorWidget)
+                editorWidget = createEditorWidget(
+                    app.serviceManager,
+                    widget.content.stateChanged
+                )
             }
 
             if (!tracker.has(editorWidget)) {
