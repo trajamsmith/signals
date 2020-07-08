@@ -5,7 +5,7 @@ import { addProp } from '../redux/form'
 import styled from 'styled-components'
 
 const Container = styled.div`
-    height: 300px;
+    height: 200px;
     with: 100%;
 
     display: flex;
