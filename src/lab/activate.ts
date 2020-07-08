@@ -6,9 +6,10 @@ import {
 } from '@jupyterlab/apputils'
 import { FileEditor } from '@jupyterlab/fileeditor'
 
-import ReactWidget from './ReactWidget'
+import ReactWidget from '../widgets/uiWidget/ReactWidget'
 import { requestAPI } from '../services/signals'
-import createEditor from './createEditor'
+import createEditorWidget from '../widgets/editorWidget/createEditorWidget'
+import createUIWidget from '../widgets/uiWidget/createUIWidget'
 
 export default (
     app: JupyterFrontEnd,
@@ -27,11 +28,7 @@ export default (
         execute: () => {
             if (!widget || widget.isDisposed) {
                 // Create a new widget if one does not exist
-                const content = new ReactWidget()
-                widget = new MainAreaWidget({ content })
-                widget.id = 'signals-jupyterlab'
-                widget.title.label = 'Signals UI'
-                widget.title.closable = true
+                widget = createUIWidget()
             }
 
             if (!tracker.has(widget)) {
@@ -50,25 +47,10 @@ export default (
             // app.shell.activateById(widget.id)
             if (!editorWidget || editorWidget.isDisposed) {
                 // Create a new editor if one does not exist
-                const { content } = createEditor(app.serviceManager)
-                editorWidget = new MainAreaWidget({ content })
-                editorWidget.id = 'signals-jupyterlab'
-                editorWidget.title.label = 'Signals Editor'
-                editorWidget.title.closable = true
-                editorWidget.content.editor.newIndentedLine()
-                widget.content.stateChanged.connect((widget, data) => {
-                    const editor = editorWidget.content.editor
-                    const position = editor.getSelection()
-                    editorWidget.content.editor.setSelection(position)
-                    if (typeof data === 'number') {
-                        editor.replaceSelection(`counter: ${data}\n`)
-                    } else {
-                        //@ts-ignore
-                        editor.replaceSelection(
-                            `${data.key}: '${data.value}'\n`
-                        )
-                    }
-                }, editorWidget)
+                editorWidget = createEditorWidget(
+                    app.serviceManager,
+                    widget.content.stateChanged
+                )
             }
 
             if (!tracker.has(editorWidget)) {
@@ -97,6 +79,7 @@ export default (
     >({
         namespace: 'signals'
     })
+
     restorer.restore(tracker, {
         command,
         name: () => 'signals'

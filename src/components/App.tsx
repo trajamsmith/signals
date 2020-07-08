@@ -14,6 +14,7 @@ const App = ({ stateChanged }): JSX.Element => {
     return (
         <Provider store={store}>
             <Counter stateChanged={stateChanged} />
+            <hr />
             <Form stateChanged={stateChanged} />
         </Provider>
     )

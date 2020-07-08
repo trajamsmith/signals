@@ -10,15 +10,24 @@ import {
     TextModelFactory
 } from '@jupyterlab/docregistry'
 import { ServiceManager } from '@jupyterlab/services'
+import { MainAreaWidget } from '@jupyterlab/apputils'
+import { TStateChanged } from '../uiWidget/ReactWidget'
+import EditorWidget from './EditorWidget'
 
-const createEditor = (
-    serviceManager: ServiceManager
-): IDocumentWidget<FileEditor> => {
+/**
+ * Factory function for editor widgets.
+ * @param serviceManager from app
+ * @param uiStateChanged from UI Widget
+ */
+const createEditorWidget = (
+    serviceManager: ServiceManager,
+    uiStateChanged: TStateChanged
+): MainAreaWidget<FileEditor> => {
     const factoryService = new CodeMirrorEditorFactory()
     const modelFactory = new TextModelFactory()
     const mimeTypeService = new CodeMirrorMimeTypeService()
 
-    const path = 'setup.py'
+    const path = 'test.yaml'
     const context: Context<DocumentRegistry.ICodeModel> = new Context({
         manager: serviceManager,
         factory: modelFactory,
@@ -36,10 +45,14 @@ const createEditor = (
             defaultFor: ['*']
         }
     })
+    const { content } = editorFactory.createNew(context)
 
-    const editor = editorFactory.createNew(context)
-
-    return editor
+    const options = {
+        signals: {
+            uiStateChanged
+        }
+    }
+    return new EditorWidget(content, options)
 }
 
-export default createEditor
+export default createEditorWidget

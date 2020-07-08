@@ -2,6 +2,39 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { addProp } from '../redux/form'
+import styled from 'styled-components'
+
+const Container = styled.div`
+    height: 200px;
+    with: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    & > * {
+        margin: 15px;
+    }
+`
+
+const Row = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+
+const Field = styled.input`
+    padding: 15px;
+    margin-right: 5px;
+`
+
+const Submit = styled.input`
+    border-style: none;
+    width: 150px;
+    border-radius: 4px;
+    height: 30px;
+`
 
 interface IFormProps {
     stateChanged: any
@@ -25,9 +58,15 @@ const Form: React.FC<IFormProps> = ({ stateChanged }) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <input name="key" defaultValue="key" ref={register()} />
-            <input name="value" ref={register()} />
-            <input type="submit" />
+            <Container>
+                <Row>
+                    <Field name="key" ref={register()} />
+                    <Field name="value" ref={register()} />
+                </Row>
+                <Row>
+                    <Submit type="submit" value="Add Property" />
+                </Row>
+            </Container>
         </form>
     )
 }
