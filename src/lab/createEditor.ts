@@ -32,7 +32,7 @@ const createEditor = (
         },
         factoryOptions: {
             name: 'editor',
-            fileTypes: ['*'],
+            fileTypes: ['yaml'],
             defaultFor: ['*']
         }
     })

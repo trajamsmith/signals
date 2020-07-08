@@ -56,8 +56,11 @@ export default (
                 editorWidget.title.label = 'Signals Editor'
                 editorWidget.title.closable = true
                 widget.content.stateChanged.connect(() => {
-                    console.log('woah')
-                    editorWidget.content.editor.newIndentedLine()
+                    const editor = editorWidget.content.editor
+                    editor.newIndentedLine()
+                    const position = editor.getSelection()
+                    editorWidget.content.editor.setSelection(position)
+                    editor.replaceSelection('woah woah woah woah')
                 }, editorWidget)
             }
 
