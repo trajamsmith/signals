@@ -6,9 +6,10 @@ import {
 } from '@jupyterlab/apputils'
 import { FileEditor } from '@jupyterlab/fileeditor'
 
-import ReactWidget from './ReactWidget'
+import ReactWidget from '../widgets/ReactWidget'
 import { requestAPI } from '../services/signals'
-import createEditor from './createEditor'
+import createEditorWidget from '../widgets/createEditorWidget'
+import createUIWidget from '../widgets/createUIWidget'
 
 export default (
     app: JupyterFrontEnd,
@@ -27,11 +28,7 @@ export default (
         execute: () => {
             if (!widget || widget.isDisposed) {
                 // Create a new widget if one does not exist
-                const content = new ReactWidget()
-                widget = new MainAreaWidget({ content })
-                widget.id = 'signals-jupyterlab'
-                widget.title.label = 'Signals UI'
-                widget.title.closable = true
+                widget = createUIWidget()
             }
 
             if (!tracker.has(widget)) {
@@ -50,11 +47,8 @@ export default (
             // app.shell.activateById(widget.id)
             if (!editorWidget || editorWidget.isDisposed) {
                 // Create a new editor if one does not exist
-                const { content } = createEditor(app.serviceManager)
-                editorWidget = new MainAreaWidget({ content })
-                editorWidget.id = 'signals-jupyterlab'
-                editorWidget.title.label = 'Signals Editor'
-                editorWidget.title.closable = true
+                editorWidget = createEditorWidget(app.serviceManager)
+
                 editorWidget.content.editor.newIndentedLine()
                 widget.content.stateChanged.connect((widget, data) => {
                     const editor = editorWidget.content.editor
@@ -63,8 +57,8 @@ export default (
                     if (typeof data === 'number') {
                         editor.replaceSelection(`counter: ${data}\n`)
                     } else {
-                        //@ts-ignore
                         editor.replaceSelection(
+                            //@ts-ignore
                             `${data.key}: '${data.value}'\n`
                         )
                     }
@@ -97,6 +91,7 @@ export default (
     >({
         namespace: 'signals'
     })
+
     restorer.restore(tracker, {
         command,
         name: () => 'signals'

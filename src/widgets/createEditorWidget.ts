@@ -10,15 +10,16 @@ import {
     TextModelFactory
 } from '@jupyterlab/docregistry'
 import { ServiceManager } from '@jupyterlab/services'
+import { MainAreaWidget } from '@jupyterlab/apputils'
 
-const createEditor = (
+const createEditorWidget = (
     serviceManager: ServiceManager
-): IDocumentWidget<FileEditor> => {
+): MainAreaWidget<FileEditor> => {
     const factoryService = new CodeMirrorEditorFactory()
     const modelFactory = new TextModelFactory()
     const mimeTypeService = new CodeMirrorMimeTypeService()
 
-    const path = 'setup.py'
+    const path = 'test.yaml'
     const context: Context<DocumentRegistry.ICodeModel> = new Context({
         manager: serviceManager,
         factory: modelFactory,
@@ -37,9 +38,14 @@ const createEditor = (
         }
     })
 
-    const editor = editorFactory.createNew(context)
+    const { content } = editorFactory.createNew(context)
+    const editorWidget = new MainAreaWidget({ content })
 
-    return editor
+    editorWidget.id = 'signals-jupyterlab'
+    editorWidget.title.label = 'Signals Editor'
+    editorWidget.title.closable = true
+
+    return editorWidget
 }
 
-export default createEditor
+export default createEditorWidget
