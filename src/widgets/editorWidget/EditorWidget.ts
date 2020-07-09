@@ -1,7 +1,7 @@
 import { MainAreaWidget } from '@jupyterlab/apputils'
-import { FileEditor } from '@jupyterlab/fileeditor'
 import { CodeEditor } from '@jupyterlab/codeeditor'
 import { TStateChanged } from '../uiWidget/ReactWidget'
+import { Editor } from './Editor'
 
 interface IEditorWidgetOptions {
     signals?: {
@@ -9,10 +9,10 @@ interface IEditorWidgetOptions {
     }
 }
 
-class EditorWidget extends MainAreaWidget<FileEditor> {
+class EditorWidget extends MainAreaWidget<Editor> {
     private editor: CodeEditor.IEditor
 
-    constructor(content: FileEditor, options?: IEditorWidgetOptions) {
+    constructor(content: Editor, options?: IEditorWidgetOptions) {
         super({ content })
 
         // TODO: factor into configs somewhere
@@ -28,23 +28,49 @@ class EditorWidget extends MainAreaWidget<FileEditor> {
         }
     }
 
-    connectToUiSignal = (uiStateChanged: TStateChanged) => {
-        this.editor.newIndentedLine()
-        uiStateChanged.connect((widget, data) => {
-            const editor = this.editor
-
-            const position = editor.getSelection()
-            this.editor.setSelection(position)
-
-            if (typeof data === 'number') {
-                editor.replaceSelection(`counter: ${data}\n`)
-            } else {
-                editor.replaceSelection(
-                    //@ts-ignore
-                    `${data.key}: '${data.value}'\n`
-                )
+    selectAll = () => {
+        const position = {
+            start: {
+                line: 0,
+                column: 0
+            },
+            end: {
+                line: 10000,
+                column: 10000
             }
+        }
+        this.editor.setSelection(position)
+    }
+
+    /**
+     * Connect the editor widget to the UI's signals.
+     * @param uiStateChanged ISignal from the UI widget
+     */
+    private connectToUiSignal = (uiStateChanged: TStateChanged) => {
+        uiStateChanged.connect((widget, data) => {
+            this.selectAndReplaceAllText(data)
         }, this)
+    }
+
+    /**
+     * Replace all of the text in the document.
+     * @param text full text intended for the document
+     */
+    private selectAndReplaceAllText = (text: string) => {
+        console.log(text)
+        const position = {
+            start: {
+                line: 0,
+                column: 0
+            },
+            end: {
+                line: 10000,
+                column: 10000
+            }
+        }
+        this.editor.setSelection(position)
+
+        this.editor.replaceSelection(text)
     }
 }
 

@@ -40,7 +40,7 @@ const Button = styled.button`
  *
  * @returns The React component
  */
-const Counter = ({ stateChanged }): JSX.Element => {
+const Counter: React.FC = () => {
     const dispatch = useDispatch()
     const counter = useSelector((state: IStore) => state.counter)
 
@@ -52,7 +52,6 @@ const Counter = ({ stateChanged }): JSX.Element => {
             <Row>
                 <Button
                     onClick={(): void => {
-                        stateChanged.emit(counter)
                         dispatch(increment())
                     }}
                 >

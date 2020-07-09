@@ -36,22 +36,17 @@ const Submit = styled.input`
     height: 30px;
 `
 
-interface IFormProps {
-    stateChanged: any
-}
-
 interface IFormInputs {
     key: string
     value: string
 }
 
-const Form: React.FC<IFormProps> = ({ stateChanged }) => {
+const Form: React.FC = () => {
     const { register, handleSubmit, reset, watch } = useForm<IFormInputs>()
     const dispatch = useDispatch()
 
     const onSubmit = (data: IFormInputs) => {
         console.log('DATA: ', data)
-        stateChanged.emit(data)
         dispatch(addProp(data))
         reset()
     }

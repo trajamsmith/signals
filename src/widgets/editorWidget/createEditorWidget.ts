@@ -1,5 +1,3 @@
-import { FileEditor, FileEditorFactory } from '@jupyterlab/fileeditor'
-import { IDocumentWidget } from '@jupyterlab/docregistry/lib/registry'
 import {
     CodeMirrorEditorFactory,
     CodeMirrorMimeTypeService
@@ -13,6 +11,7 @@ import { ServiceManager } from '@jupyterlab/services'
 import { MainAreaWidget } from '@jupyterlab/apputils'
 import { TStateChanged } from '../uiWidget/ReactWidget'
 import EditorWidget from './EditorWidget'
+import { Editor, EditorFactory } from './Editor'
 
 /**
  * Factory function for editor widgets.
@@ -22,7 +21,7 @@ import EditorWidget from './EditorWidget'
 const createEditorWidget = (
     serviceManager: ServiceManager,
     uiStateChanged: TStateChanged
-): MainAreaWidget<FileEditor> => {
+): MainAreaWidget<Editor> => {
     const factoryService = new CodeMirrorEditorFactory()
     const modelFactory = new TextModelFactory()
     const mimeTypeService = new CodeMirrorMimeTypeService()
@@ -34,7 +33,7 @@ const createEditorWidget = (
         path
     })
 
-    const editorFactory = new FileEditorFactory({
+    const editorFactory = new EditorFactory({
         editorServices: {
             factoryService,
             mimeTypeService
@@ -45,6 +44,7 @@ const createEditorWidget = (
             defaultFor: ['*']
         }
     })
+
     const { content } = editorFactory.createNew(context)
 
     const options = {
@@ -52,6 +52,7 @@ const createEditorWidget = (
             uiStateChanged
         }
     }
+
     return new EditorWidget(content, options)
 }
 

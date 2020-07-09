@@ -3,24 +3,11 @@ import { ReactWidget } from '@jupyterlab/apputils'
 import App from '../../components/App'
 import { ISignal, Signal } from '@lumino/signaling'
 
-export interface ICount {
-    clickCount: number
-}
+export type TStateChanged = ISignal<Widget, string>
 
-export interface IKeyValue {
-    key: string
-    value: string
-}
-
-export type TStateChanged = ISignal<Widget, ICount | IKeyValue>
-
-/**
- * A Counter Lumino Widget that wraps a CounterComponent.
- */
 class Widget extends ReactWidget {
-    /**
-     * Constructs a new MainWidget.
-     */
+    private _stateChanged = new Signal<this, string>(this)
+
     constructor() {
         super()
         this.addClass('jp-ReactWidget')
@@ -33,8 +20,6 @@ class Widget extends ReactWidget {
     render(): JSX.Element {
         return <App stateChanged={this._stateChanged} />
     }
-
-    private _stateChanged = new Signal<this, ICount>(this)
 }
 
 export default Widget
