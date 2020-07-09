@@ -1,12 +1,12 @@
 import { FileEditor, FileEditorFactory } from '@jupyterlab/fileeditor'
 import { IEditorServices } from '@jupyterlab/codeeditor'
-import { DocumentWidget } from '@jupyterlab/docregistry'
+import { DocumentWidget, DocumentRegistry } from '@jupyterlab/docregistry'
 import { textEditorIcon } from '@jupyterlab/ui-components'
 
 /**
- * Our custom editor extends the existing FileEditor to
+ * Our custom Editor widget extends the existing FileEditor to
  * include "select all" and "replace all," for full replacement
- * of the editor contents with the Redux store.
+ * of the editor contents.
  */
 export class Editor extends FileEditor {
     constructor(options: FileEditor.IOptions) {
@@ -55,7 +55,7 @@ export class EditorFactory extends FileEditorFactory {
     /**
      * Create a new widget given a context.
      */
-    createNew(context) {
+    createNew(context: DocumentRegistry.CodeContext) {
         const factory = options => {
             return this.services.factoryService.newDocumentEditor(options)
         }

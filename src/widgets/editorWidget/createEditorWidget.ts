@@ -10,15 +10,15 @@ import {
 import { ServiceManager } from '@jupyterlab/services'
 import { MainAreaWidget } from '@jupyterlab/apputils'
 import { TStateChanged } from '../uiWidget/ReactWidget'
-import EditorWidget from './EditorWidget'
+import ConnectedEditor from './ConnectedEditor'
 import { Editor, EditorFactory } from './Editor'
 
 /**
- * Factory function for editor widgets.
+ * Factory function for our connected editor widgets.
  * @param serviceManager from app
  * @param uiStateChanged from UI Widget
  */
-const createEditorWidget = (
+const createConnectedEditorWidget = (
     serviceManager: ServiceManager,
     uiStateChanged: TStateChanged
 ): MainAreaWidget<Editor> => {
@@ -53,7 +53,7 @@ const createEditorWidget = (
         }
     }
 
-    return new EditorWidget(content, options)
+    return new ConnectedEditor(content, options)
 }
 
-export default createEditorWidget
+export default createConnectedEditorWidget
