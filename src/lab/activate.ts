@@ -43,9 +43,6 @@ export default (
             if (!tracker.has(uiWidget)) {
                 tracker.add(uiWidget)
             }
-            if (!tracker.has(editorWidget)) {
-                tracker.add(editorWidget)
-            }
 
             // Attach the widgets to the main work area if they're not there
             if (!uiWidget.isAttached) {
@@ -57,7 +54,7 @@ export default (
 
             // Activate the widgets
             app.shell.activateById(uiWidget.id)
-            app.shell.activateById(editorWidget.id)
+            // app.shell.activateById(editorWidget.id)
         }
     })
 

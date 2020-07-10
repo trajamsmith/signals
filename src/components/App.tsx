@@ -3,7 +3,7 @@ import { Provider } from 'react-redux'
 import store from '../redux/createStore'
 import YAML from 'yaml'
 
-import Form from './forms/Form'
+import Form from './Form'
 
 /**
  * React component for a counter.
