@@ -26,7 +26,8 @@ const createConnectedEditorWidget = (
     const modelFactory = new TextModelFactory()
     const mimeTypeService = new CodeMirrorMimeTypeService()
 
-    const path = 'test.yaml'
+    // TODO: dynamically generate file names
+    const path = './test.yaml'
     const context: Context<DocumentRegistry.ICodeModel> = new Context({
         manager: serviceManager,
         factory: modelFactory,

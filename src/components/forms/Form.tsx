@@ -1,11 +1,13 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { addProp } from '../redux/form'
+import { addProp } from '../../redux/form'
 import styled from 'styled-components'
 
+import FormInput from './FormInput'
+import Counter from '../Counter'
+
 const Container = styled.div`
-    height: 200px;
     with: 100%;
 
     display: flex;
@@ -20,13 +22,8 @@ const Container = styled.div`
 
 const Row = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-`
-
-const Field = styled.input`
-    padding: 15px;
-    margin-right: 5px;
 `
 
 const Submit = styled.input`
@@ -55,9 +52,18 @@ const Form: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
             <Container>
                 <Row>
-                    <Field name="key" ref={register()} />
-                    <Field name="value" ref={register()} />
+                    <FormInput name={'Name'} ref={register()} />
+                    <FormInput name={'Data Source'} ref={register()} />
                 </Row>
+                <Row>
+                    <FormInput name={'Model Name'} ref={register()} />
+                    <FormInput name={'Model Type'} ref={register()} />
+                </Row>
+                <Row>
+                    <FormInput name={'Target'} ref={register()} />
+                    <FormInput name={'Transformation'} ref={register()} />
+                </Row>
+                <Counter />
                 <Row>
                     <Submit type="submit" value="Add Property" />
                 </Row>

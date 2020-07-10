@@ -3,8 +3,7 @@ import { Provider } from 'react-redux'
 import store from '../redux/createStore'
 import YAML from 'yaml'
 
-import Counter from './Counter'
-import Form from './Form'
+import Form from './forms/Form'
 
 /**
  * React component for a counter.
@@ -20,8 +19,6 @@ const App = ({ stateChanged }): JSX.Element => {
 
     return (
         <Provider store={store}>
-            <Counter />
-            <hr />
             <Form />
         </Provider>
     )

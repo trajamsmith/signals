@@ -5,7 +5,6 @@ import { IStore } from '../redux/createStore'
 import styled from 'styled-components'
 
 const Container = styled.div`
-    height: 200px;
     with: 100%;
 
     display: flex;
@@ -26,6 +25,7 @@ const Row = styled.div`
 
 const Text = styled.p`
     font-size: 20px;
+    margin-left: 100px;
 `
 
 const Button = styled.button`
@@ -47,9 +47,6 @@ const Counter: React.FC = () => {
     return (
         <Container>
             <Row>
-                <Text>You clicked {counter} times!</Text>
-            </Row>
-            <Row>
                 <Button
                     onClick={(): void => {
                         dispatch(increment())
@@ -57,6 +54,7 @@ const Counter: React.FC = () => {
                 >
                     Increment
                 </Button>
+                <Text>{counter}</Text>
             </Row>
         </Container>
     )

@@ -9,9 +9,12 @@ interface IEditorWidgetOptions {
     }
 }
 
+/**
+ * Widget that connects the Editor to the signals emitted
+ * by the UI widget.
+ */
 class ConnectedEditor extends MainAreaWidget<Editor> {
     private editor: Editor
-    private codeEditor: CodeEditor.IEditor
 
     constructor(content: Editor, options?: IEditorWidgetOptions) {
         super({ content })
@@ -22,7 +25,6 @@ class ConnectedEditor extends MainAreaWidget<Editor> {
         this.title.closable = true
 
         this.editor = content
-        this.codeEditor = content.editor
 
         const uiStateChanged = options.signals.uiStateChanged
         if (uiStateChanged) {
@@ -32,7 +34,7 @@ class ConnectedEditor extends MainAreaWidget<Editor> {
 
     /**
      * Connect the editor widget to the UI's signals.
-     * @param uiStateChanged ISignal from the UI widget
+     * @param uiStateChanged signal from the UI widget
      */
     private connectToUiSignal = (uiStateChanged: TStateChanged) => {
         uiStateChanged.connect((widget, data) => {
