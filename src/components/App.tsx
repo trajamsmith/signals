@@ -1,8 +1,8 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import store from '../redux/createStore'
+import YAML from 'yaml'
 
-import Counter from './Counter'
 import Form from './Form'
 
 /**
@@ -11,11 +11,15 @@ import Form from './Form'
  * @returns The React component
  */
 const App = ({ stateChanged }): JSX.Element => {
+    // Trigger EditorWidget update using the whole store
+    store.subscribe(() => {
+        const state = store.getState()
+        stateChanged.emit(YAML.stringify(state))
+    })
+
     return (
         <Provider store={store}>
-            <Counter stateChanged={stateChanged} />
-            <hr />
-            <Form stateChanged={stateChanged} />
+            <Form />
         </Provider>
     )
 }

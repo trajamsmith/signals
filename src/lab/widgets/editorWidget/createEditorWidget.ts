@@ -1,5 +1,3 @@
-import { FileEditor, FileEditorFactory } from '@jupyterlab/fileeditor'
-import { IDocumentWidget } from '@jupyterlab/docregistry/lib/registry'
 import {
     CodeMirrorEditorFactory,
     CodeMirrorMimeTypeService
@@ -12,29 +10,31 @@ import {
 import { ServiceManager } from '@jupyterlab/services'
 import { MainAreaWidget } from '@jupyterlab/apputils'
 import { TStateChanged } from '../uiWidget/ReactWidget'
-import EditorWidget from './EditorWidget'
+import ConnectedEditor from './ConnectedEditor'
+import { Editor, EditorFactory } from './Editor'
 
 /**
- * Factory function for editor widgets.
+ * Factory function for our connected editor widgets.
  * @param serviceManager from app
  * @param uiStateChanged from UI Widget
  */
-const createEditorWidget = (
+const createConnectedEditorWidget = (
     serviceManager: ServiceManager,
     uiStateChanged: TStateChanged
-): MainAreaWidget<FileEditor> => {
+): MainAreaWidget<Editor> => {
     const factoryService = new CodeMirrorEditorFactory()
     const modelFactory = new TextModelFactory()
     const mimeTypeService = new CodeMirrorMimeTypeService()
 
-    const path = 'test.yaml'
+    // TODO: dynamically generate file names
+    const path = './test.yaml'
     const context: Context<DocumentRegistry.ICodeModel> = new Context({
         manager: serviceManager,
         factory: modelFactory,
         path
     })
 
-    const editorFactory = new FileEditorFactory({
+    const editorFactory = new EditorFactory({
         editorServices: {
             factoryService,
             mimeTypeService
@@ -45,6 +45,7 @@ const createEditorWidget = (
             defaultFor: ['*']
         }
     })
+
     const { content } = editorFactory.createNew(context)
 
     const options = {
@@ -52,7 +53,8 @@ const createEditorWidget = (
             uiStateChanged
         }
     }
-    return new EditorWidget(content, options)
+
+    return new ConnectedEditor(content, options)
 }
 
-export default createEditorWidget
+export default createConnectedEditorWidget

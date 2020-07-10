@@ -2,56 +2,29 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { addProp } from '../redux/form'
-import styled from 'styled-components'
 
-const Container = styled.div`
-    height: 200px;
-    with: 100%;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    & > * {
-        margin: 15px;
-    }
-`
-
-const Row = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`
-
-const Field = styled.input`
-    padding: 15px;
-    margin-right: 5px;
-`
-
-const Submit = styled.input`
-    border-style: none;
-    width: 150px;
-    border-radius: 4px;
-    height: 30px;
-`
-
-interface IFormProps {
-    stateChanged: any
-}
+import Counter from './Counter'
+import {
+    Container,
+    Row,
+    InputContainer,
+    Name,
+    Field,
+    Divider,
+    Submit
+} from './styles'
 
 interface IFormInputs {
     key: string
     value: string
 }
 
-const Form: React.FC<IFormProps> = ({ stateChanged }) => {
+const Form: React.FC = () => {
     const { register, handleSubmit, reset, watch } = useForm<IFormInputs>()
     const dispatch = useDispatch()
 
     const onSubmit = (data: IFormInputs) => {
         console.log('DATA: ', data)
-        stateChanged.emit(data)
         dispatch(addProp(data))
         reset()
     }
@@ -60,11 +33,39 @@ const Form: React.FC<IFormProps> = ({ stateChanged }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
             <Container>
                 <Row>
-                    <Field name="key" ref={register()} />
-                    <Field name="value" ref={register()} />
+                    <InputContainer>
+                        <Name>{'Recipe Name'}</Name>
+                        <Field name={'Recipe Name'} ref={register()} />
+                    </InputContainer>
+                    <InputContainer>
+                        <Name>{'Data Source'}</Name>
+                        <Field name={'Data Source'} ref={register()} />
+                    </InputContainer>
                 </Row>
                 <Row>
-                    <Submit type="submit" value="Add Property" />
+                    <InputContainer>
+                        <Name>{'Model Name'}</Name>
+                        <Field name={'Model Name'} ref={register()} />
+                    </InputContainer>
+                    <InputContainer>
+                        <Name>{'Model Type'}</Name>
+                        <Field name={'Model Type'} ref={register()} />
+                    </InputContainer>
+                </Row>
+                <Row>
+                    <InputContainer>
+                        <Name>{'Target'}</Name>
+                        <Field name={'Target'} ref={register()} />
+                    </InputContainer>
+                    <InputContainer>
+                        <Name>{'Output'}</Name>
+                        <Field name={'Output'} ref={register()} />
+                    </InputContainer>
+                </Row>
+                <Counter />
+                <Divider />
+                <Row>
+                    <Submit type="submit" value="Submit" />
                 </Row>
             </Container>
         </form>
