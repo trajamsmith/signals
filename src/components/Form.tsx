@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import { addProp } from '../redux/form'
+import { addProp, IFormSlice } from '../redux/form'
 
 import Counter from './Counter'
 import {
@@ -14,16 +14,11 @@ import {
     Submit
 } from './styles'
 
-interface IFormInputs {
-    key: string
-    value: string
-}
-
 const Form: React.FC = () => {
-    const { register, handleSubmit, reset, watch } = useForm<IFormInputs>()
+    const { register, handleSubmit, reset, watch } = useForm<IFormSlice>()
     const dispatch = useDispatch()
 
-    const onSubmit = (data: IFormInputs) => {
+    const onSubmit = (data: IFormSlice) => {
         console.log({ data })
         dispatch(addProp(data))
         reset()
@@ -34,31 +29,31 @@ const Form: React.FC = () => {
             <Container>
                 <Row>
                     <InputContainer>
-                        <Name>{'Recipe Name'}</Name>
+                        <Name>{'recipeName'}</Name>
                         <Field name={'Recipe Name'} ref={register()} />
                     </InputContainer>
                     <InputContainer>
-                        <Name>{'Data Source'}</Name>
+                        <Name>{'dataSource'}</Name>
                         <Field name={'Data Source'} ref={register()} />
                     </InputContainer>
                 </Row>
                 <Row>
                     <InputContainer>
-                        <Name>{'Model Name'}</Name>
+                        <Name>{'modelName'}</Name>
                         <Field name={'Model Name'} ref={register()} />
                     </InputContainer>
                     <InputContainer>
-                        <Name>{'Model Type'}</Name>
+                        <Name>{'modelType'}</Name>
                         <Field name={'Model Type'} ref={register()} />
                     </InputContainer>
                 </Row>
                 <Row>
                     <InputContainer>
-                        <Name>{'Target'}</Name>
+                        <Name>{'target'}</Name>
                         <Field name={'Target'} ref={register()} />
                     </InputContainer>
                     <InputContainer>
-                        <Name>{'Output'}</Name>
+                        <Name>{'output'}</Name>
                         <Field name={'Output'} ref={register()} />
                     </InputContainer>
                 </Row>
