@@ -4,22 +4,30 @@ import {
     MainAreaWidget,
     WidgetTracker
 } from '@jupyterlab/apputils'
-import { FileEditor } from '@jupyterlab/fileeditor'
+import { IDocumentManager } from '@jupyterlab/docmanager'
 
-// import { requestAPI } from '../services/signals'
 import ReactWidget from './widgets/uiWidget/ReactWidget'
-import createEditorWidget from './widgets/editorWidget/createEditorWidget'
+import { Editor } from './widgets/editorWidget/Editor'
+import {
+    createConnectedEditorWidget,
+    registerEditorFactory
+} from './widgets/editorWidget/createEditorWidget'
 import createUIWidget from './widgets/uiWidget/createUIWidget'
+// import { requestAPI } from '../services/signals'
 
 export default (
     app: JupyterFrontEnd,
     palette: ICommandPalette,
-    restorer: ILayoutRestorer
+    restorer: ILayoutRestorer,
+    docManager: IDocumentManager
 ): void => {
     console.log('JupyterLab extension signals is activated!')
+    console.log({ docManager })
+    // Register our custom EditorFactory
+    registerEditorFactory(app.docRegistry)
 
     let uiWidget: MainAreaWidget<ReactWidget>
-    let editorWidget: MainAreaWidget<FileEditor>
+    let editorWidget: MainAreaWidget<Editor>
 
     // Add an application command
     const command = 'signals:open'
@@ -33,9 +41,9 @@ export default (
 
             if (!editorWidget || editorWidget.isDisposed) {
                 // Create a new editor if one does not exist
-                editorWidget = createEditorWidget(
-                    app.serviceManager,
-                    uiWidget.content.stateChanged
+                editorWidget = createConnectedEditorWidget(
+                    uiWidget.content.stateChanged,
+                    docManager
                 )
             }
 

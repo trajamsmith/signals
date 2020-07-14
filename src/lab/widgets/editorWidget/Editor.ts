@@ -44,12 +44,14 @@ export class Editor extends FileEditor {
  * Similar to the FileEditorFactory, but returns a widget containing
  * our custom Editor, with its minor extensions.
  */
-export class EditorFactory extends FileEditorFactory {
+export class EditorFactory extends FileEditorFactory
+    implements DocumentRegistry.WidgetFactory {
     private services: IEditorServices
 
     constructor(options: FileEditorFactory.IOptions) {
         super(options)
         this.services = options.editorServices
+        // this._name = 'EditorFactory'
     }
 
     /**

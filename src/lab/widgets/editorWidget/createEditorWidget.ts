@@ -5,48 +5,63 @@ import {
 import {
     Context,
     DocumentRegistry,
-    TextModelFactory
+    TextModelFactory,
+    DocumentWidget
 } from '@jupyterlab/docregistry'
 import { ServiceManager } from '@jupyterlab/services'
 import { MainAreaWidget } from '@jupyterlab/apputils'
+import { IDocumentManager } from '@jupyterlab/docmanager'
+
+import { Editor, EditorFactory } from './Editor'
 import { TStateChanged } from '../uiWidget/ReactWidget'
 import ConnectedEditor from './ConnectedEditor'
-import { Editor, EditorFactory } from './Editor'
+
+/**
+ * Register our Editor widget factory so we can use the
+ * DocumentManager to open files with our widgets.
+ * @param docRegistry singleton from activate.ts (DI)
+ */
+export const registerEditorFactory = (docRegistry: DocumentRegistry): void => {
+    console.log({ docRegistry })
+    const factoryService = new CodeMirrorEditorFactory()
+    const mimeTypeService = new CodeMirrorMimeTypeService()
+
+    // Register our custom FilEditorFactory
+    docRegistry.addWidgetFactory(
+        new EditorFactory({
+            editorServices: {
+                factoryService,
+                mimeTypeService
+            },
+            factoryOptions: {
+                name: 'connected editor',
+                fileTypes: ['yaml'],
+                defaultFor: []
+            }
+        })
+    )
+}
 
 /**
  * Factory function for our connected editor widgets.
  * @param serviceManager from app
  * @param uiStateChanged from UI Widget
  */
-const createConnectedEditorWidget = (
-    serviceManager: ServiceManager,
-    uiStateChanged: TStateChanged
+export const createConnectedEditorWidget = (
+    uiStateChanged: TStateChanged,
+    docManager: IDocumentManager
 ): MainAreaWidget<Editor> => {
-    const factoryService = new CodeMirrorEditorFactory()
-    const modelFactory = new TextModelFactory()
-    const mimeTypeService = new CodeMirrorMimeTypeService()
+    const { content } = docManager.createNew(
+        'test.yaml',
+        'connected editor'
+    ) as DocumentWidget<Editor, DocumentRegistry.ICodeModel>
 
-    // TODO: dynamically generate file names
-    const path = './test.yaml'
-    const context: Context<DocumentRegistry.ICodeModel> = new Context({
-        manager: serviceManager,
-        factory: modelFactory,
-        path
-    })
-
-    const editorFactory = new EditorFactory({
-        editorServices: {
-            factoryService,
-            mimeTypeService
-        },
-        factoryOptions: {
-            name: 'editor',
-            fileTypes: ['yaml'],
-            defaultFor: ['*']
-        }
-    })
-
-    const { content } = editorFactory.createNew(context)
+    if (!content) {
+        console.error(
+            'The document manager was unable to create a ConnecteEditor widget.'
+        )
+        return
+    }
 
     const options = {
         signals: {
@@ -56,5 +71,3 @@ const createConnectedEditorWidget = (
 
     return new ConnectedEditor(content, options)
 }
-
-export default createConnectedEditorWidget
