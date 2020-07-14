@@ -4,11 +4,8 @@ const formSlice = createSlice({
     name: 'form',
     initialState: {},
     reducers: {
-        addProp: (
-            state,
-            action: { payload: { key: string; value: string } }
-        ): void => {
-            state[action.payload.key] = action.payload.value
+        addProp: (state, action: { payload: any }): void => {
+            return action.payload
         }
     }
 })

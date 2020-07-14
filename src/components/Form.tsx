@@ -24,7 +24,7 @@ const Form: React.FC = () => {
     const dispatch = useDispatch()
 
     const onSubmit = (data: IFormInputs) => {
-        console.log('DATA: ', data)
+        console.log({ data })
         dispatch(addProp(data))
         reset()
     }

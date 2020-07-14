@@ -14,6 +14,7 @@ const App = ({ stateChanged }): JSX.Element => {
     // Trigger EditorWidget update using the whole store
     store.subscribe(() => {
         const state = store.getState()
+        console.log({ state })
         stateChanged.emit(YAML.stringify(state))
     })
 
